@@ -295,6 +295,9 @@ def isCloseGame(score1, score2, time, period):
 #Fetches group me from config file
 botID = getConfigBotID()
 
+#Sends bot boot up message
+sendGroupMeMessage(botID, "Bot booted up")
+
 #Main loop checks scores every 15 seconds
 while True:
     getCurrentNBAGames()
