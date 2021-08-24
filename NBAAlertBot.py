@@ -167,55 +167,57 @@ def getCurrentNBAGames(notifiedGames, tighterGames, OTGames):
     #Iterates through every game for the day
     for game in data["games"]:
 
-        gameID = game["gameId"]
+        if game["leagueName"] == "standard":
 
-        homeTeamCode = game["hTeam"]["triCode"]
-        homeTeamScore =  game["hTeam"]["score"]
+            gameID = game["gameId"]
 
-        visitTeamCode = game["vTeam"]["triCode"]
-        visitTeamScore = game["vTeam"]["score"]
+            homeTeamCode = game["hTeam"]["triCode"]
+            homeTeamScore =  game["hTeam"]["score"]
 
-        gamePeriod = game["period"]["current"]
-        timeInPeriod = game["clock"]
+            visitTeamCode = game["vTeam"]["triCode"]
+            visitTeamScore = game["vTeam"]["score"]
 
-        #Checks to see if game is active
-        if (homeTeamScore != "" and visitTeamScore != ""):
-            activeGames = True
-            print("Q" + str(gamePeriod) + " " + timeInPeriod + ": " + visitTeamCode + "(" + visitTeamScore + ")"  + " @ " +  homeTeamCode + "(" + homeTeamScore + ")")
-            timeString = "Q" + str(gamePeriod) + " " + timeInPeriod 
-            
-            #Calculates if the game is close
-            if (isCloseGame(int(visitTeamScore), int(homeTeamScore), timeInPeriod, gamePeriod)==1):
+            gamePeriod = game["period"]["current"]
+            timeInPeriod = game["clock"]
+
+            #Checks to see if game is active
+            if (homeTeamScore != "" and visitTeamScore != ""):
+                activeGames = True
+                print("Q" + str(gamePeriod) + " " + timeInPeriod + ": " + visitTeamCode + "(" + visitTeamScore + ")"  + " @ " +  homeTeamCode + "(" + homeTeamScore + ")")
+                timeString = "Q" + str(gamePeriod) + " " + timeInPeriod 
                 
-                #Checks to make sure that we have not been notified for game
-                if (gameID not in notifiedGames):
-
-					#Add game to list of notified game
-                    notifiedGames.append(gameID)
-
-					#Sends group me alert about the game
-                    sendAlert(botID, "CLUTCH TIME GAME", homeTeamCode, visitTeamCode, homeTeamScore, visitTeamScore)
+                #Calculates if the game is close
+                if (isCloseGame(int(visitTeamScore), int(homeTeamScore), timeInPeriod, gamePeriod)==1):
                     
+                    #Checks to make sure that we have not been notified for game
+                    if (gameID not in notifiedGames):
 
-            elif(isCloseGame(int(visitTeamScore), int(homeTeamScore), timeInPeriod, gamePeriod)==2):
-                #Checks to make sure that we have not been notified for game
-                if (gameID not in tighterGames):
+                        #Add game to list of notified game
+                        notifiedGames.append(gameID)
 
-                    #Add game to list of notified game
-                    tighterGames.append(gameID)
+                        #Sends group me alert about the game
+                        sendAlert(botID, "CLUTCH TIME GAME", homeTeamCode, visitTeamCode, homeTeamScore, visitTeamScore)
+                        
 
-                    #Sends group me alert about the game
-                    sendAlert(botID, "2 MINUTE CLOSE GAME", homeTeamCode, visitTeamCode, homeTeamScore, visitTeamScore)
+                elif(isCloseGame(int(visitTeamScore), int(homeTeamScore), timeInPeriod, gamePeriod)==2):
+                    #Checks to make sure that we have not been notified for game
+                    if (gameID not in tighterGames):
 
-            elif(isCloseGame(int(visitTeamScore), int(homeTeamScore), timeInPeriod, gamePeriod)==3):
-                #Checks to make sure that we have not been notified for game
-                if (gameID not in OTGames):
+                        #Add game to list of notified game
+                        tighterGames.append(gameID)
 
-                    #Add game to list of notified game
-                    OTGames.append(gameID)
+                        #Sends group me alert about the game
+                        sendAlert(botID, "2 MINUTE CLOSE GAME", homeTeamCode, visitTeamCode, homeTeamScore, visitTeamScore)
 
-                    #Sends group me alert about the game
-                    sendAlert(botID, "OVERTIME GAME", homeTeamCode, visitTeamCode, homeTeamScore, visitTeamScore)
+                elif(isCloseGame(int(visitTeamScore), int(homeTeamScore), timeInPeriod, gamePeriod)==3):
+                    #Checks to make sure that we have not been notified for game
+                    if (gameID not in OTGames):
+
+                        #Add game to list of notified game
+                        OTGames.append(gameID)
+
+                        #Sends group me alert about the game
+                        sendAlert(botID, "OVERTIME GAME", homeTeamCode, visitTeamCode, homeTeamScore, visitTeamScore)
 
     #If games are over clears notified games
     if(not activeGames):
@@ -299,6 +301,8 @@ botID = getConfigBotID()
 #sendGroupMeMessage(botID, "Bot booting up")
 #time.sleep(15)
 #sendGroupMeMessage(botID, "Bot booted up")
+
+print(getNBADayString())
 
 #Main loop checks scores every 15 seconds
 while True:
