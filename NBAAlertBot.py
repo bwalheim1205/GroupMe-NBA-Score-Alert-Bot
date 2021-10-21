@@ -184,7 +184,6 @@ def getCurrentNBAGames(notifiedGames, tighterGames, OTGames):
             if (homeTeamScore != "" and visitTeamScore != ""):
                 activeGames = True
                 print("Q" + str(gamePeriod) + " " + timeInPeriod + ": " + visitTeamCode + "(" + visitTeamScore + ")"  + " @ " +  homeTeamCode + "(" + homeTeamScore + ")")
-                timeString = "Q" + str(gamePeriod) + " " + timeInPeriod 
                 
                 #Calculates if the game is close
                 if (isCloseGame(int(visitTeamScore), int(homeTeamScore), timeInPeriod, gamePeriod)==1):
@@ -250,7 +249,7 @@ def getStreamLink(hTeamCode, vTeamCode):
     #http://liveonscore.tv/nba-stream/home-team-vs-away-team/
     homeTeam = tricodeToName[hTeamCode].lower().replace(" ","-")
     awayTeam = tricodeToName[vTeamCode].lower().replace(" ","-")
-    return "http://liveonscore.tv/nba-stream/"+homeTeam+"-vs-"+awayTeam+"/"
+    return "http://weakstreams.com/nba-stream/"+homeTeam+"-vs-"+awayTeam+"/"
 
 #Returns int if team is clsoe
 #   Close game is defined as withing 5 minutes
